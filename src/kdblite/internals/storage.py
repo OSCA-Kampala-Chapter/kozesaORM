@@ -59,7 +59,6 @@ class Store:
     def load(self,name = None):
         sp = self.store_path/name                   #sp:store path
         if sp.is_dir():
-            print("dir exists...")
             tab = sp/(name + TAB_EXT)                  #tab file
             kdbl = sp/(name + KDBL_EXT)                #kdbl file
             kfg = sp/(name + KFG_EXT)                  #kfg file
@@ -67,7 +66,6 @@ class Store:
                 self._tab_file = tab
                 self._kdbl_file = kdbl
                 self._kfg_file = kfg
-                print("files exists...")
                 
                 #Migrate this code section to parenthesized context managers in python 310
                 with kfg.open() as k:
