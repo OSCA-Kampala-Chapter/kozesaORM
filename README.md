@@ -16,4 +16,5 @@ to use and customize freely.
 
 To install kozesaDBLite, copy and paste the command below in your terminal
 ``` bash
-pip install git+https://github.com/ht-thomas/kozesaDBLite.git ```
+pip install git+https://github.com/ht-thomas/kozesaDBLite.git 
+```
