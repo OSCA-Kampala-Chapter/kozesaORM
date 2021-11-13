@@ -15,4 +15,5 @@ to use and customize freely.
 * Table can also have checkers, these are python functions which filter data in a table column and retuen customized data during a query
 
 To install kozesaDBLite, copy and paste the command below in your terminal
-** pip install git+https://github.com/ht-thomas/kozesaDBLite.git **
+``` bash
+pip install git+https://github.com/ht-thomas/kozesaDBLite.git ```
