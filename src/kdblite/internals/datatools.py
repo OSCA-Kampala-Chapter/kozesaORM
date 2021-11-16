@@ -207,7 +207,7 @@ class DataTable:
         raise ParamDoesnotExist("The given parameter does not exist")
 
     def get_column(self,param,checker:Callable[...,list] = None) -> list:
-        result = [row.get_field(param).value for row in self.rows()]
+        result = [row.get_field(param) for row in self.rows()]
         if (isfunction(checker) or ismethod(checker)):
             column = checker(result)
             return column
@@ -221,3 +221,40 @@ class DataTable:
                 return column
         else:
             raise ValueError("checker is supposed to be a function or method")       
+    
+    def _validate_column(self, column_name) -> bool:
+        """
+        Use:    Makes a check on a given column to determine its datatype integrity and whether it exists as a parameter. leaves a table with only valid columns
+        Why:    Since the rows.row() is a dictionary, it can be updated with other keys and items with different datatypes. the
+                keys in this case however do not appear in the self._parameters and the datatypes of items can be mixed or even not be str or int datatypes 
+        """
+        if column_name in self._parameters:#checks if column_name added to self._parameters
+            valid_datatypes = [datatype for datatype in self._parameters.values()]
+            column = self.get_column(column_name)
+            column_datatype = type(column[0])
+            column_length = len(column)
+            
+            if column_datatype in valid_datatypes:#checks if datatype is of str of int type
+                count = 0
+                for i in column:
+                    if isinstance(i, column_datatype):#checks every instance of the list to determine if they are all the same datatype
+                        count += 1
+            else:
+                print("Invalid datatype in '{}'. deleting {}".format(column_name, column_name))
+                deleted_values = [row.row().pop('{}'.format(column_name)) for row in self.rows()]#creates a list of deleted values
+                return False 
+            
+            if count == column_length:
+                return True
+
+            else:#runs if list has more than one datatype
+                print("Invalid datatype in '{}'. deleting {}".format(column_name, column_name))
+                deleted_values = [row.row().pop('{}'.format(column_name)) for row in self.rows()]#creates a list of deleted values
+                return False
+        else:
+            print("parameter '{}' instantiated abnormally. deleting...".format(column_name))
+            deleted_values = [row.row().pop('{}'.format(column_name)) for row in self.rows()]#creates a list of deleted values
+            return False
+        return column
+
+        
