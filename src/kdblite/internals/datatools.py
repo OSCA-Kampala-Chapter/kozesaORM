@@ -207,7 +207,7 @@ class DataTable:
         raise ParamDoesnotExist("The given parameter does not exist")
 
     def get_column(self,param,checker:Callable[...,list] = None) -> list:
-        result = [row.get_field(param) for row in self.rows()]
+        result = [row.get_field(param).value for row in self.rows()]
         if (isfunction(checker) or ismethod(checker)):
             column = checker(result)
             return column
@@ -222,7 +222,7 @@ class DataTable:
         else:
             raise ValueError("checker is supposed to be a function or method")       
     
-    def _validate_column(self, column_name) -> bool:
+    def validate_column(self, column_name) -> bool:
         """
         Use:    Makes a check on a given column to determine its datatype integrity and whether it exists as a parameter. leaves a table with only valid columns
         Why:    Since the rows.row() is a dictionary, it can be updated with other keys and items with different datatypes. the
