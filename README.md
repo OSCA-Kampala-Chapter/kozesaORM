@@ -3,7 +3,7 @@
 ### Introduction
 KozesaDBLite is a light weight table based database framework developed in Python.
 The database was originally developed to power the Kozesa BMS(Business Management System)
-software suite, a collection of six frequently used business management software which
+software suite, a collection of frequently used business management software which
 can be used for free.
 The name Kozesa is a ganda word meaning "use". The symbolism is that the tools is for anyone
 to use and customize freely.
@@ -115,3 +115,41 @@ table.initialize(s.tab_repr,s.kdbl_repr)
 ```
 The Store class has attributes tab_repr and kdbl_repr which represent parameters and the table for the database respectively.
 the tab_repr and kdbl_repr strings are passed to the table's initialize method in order to load the table.
+
+One can also add checkers and modifiers to the table. A checker is a callback function added directly to the table or during column lookup
+which applies a constraint on column lookup. A checker can ensure that the return values from a column lookup returns only the desired results.
+For example:
+``` python
+def only_even(column_item):
+    if (column_item % 2) == 0:
+        return column_item
+    return None
+```
+Now you can either add the checker on column lookup by passing the callback as an argument or by adding the callback on the column directly.
+Adding the callback on the column directly shall make it be called on every subsequent lookup of the column. If you only wish to call the callback
+once, it's better to pass it as a function argument to the column lookup function.
+
+```python
+#either
+table.add_checker("Age",only_even)
+
+#or
+table.get_column("Age",only_even)
+```
+The return value will be a list containing ages that are even numbers only.
+
+Modifiers are also callback functions just like checkers. However, their use is to modify a value as it's being inserted into a table field.
+```python
+def multiply(value):
+    return value * 2
+    
+table.add_modifier("Age",multiply)
+index,row = table.new_row()
+field = row.get_field("Age")
+field.value = 20
+
+#the actual value stored on the database will be 40
+```
+### Conclusion
+KozesaDBLite is still under rigorous development and test, and it's not yet ready for production use.
+We need help for the community to make this the best and most intuitive database framework to use, with a very low learning curve.
