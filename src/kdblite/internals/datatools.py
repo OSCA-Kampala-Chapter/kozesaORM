@@ -1,7 +1,7 @@
 from __future__ import annotations
 from kdblite.internals.errors import ParamDoesnotExist,InvalidError
 from json import JSONDecoder,JSONEncoder
-from typing import Union,Callable,Any
+from typing import Union,Callable,Any,Optional
 from inspect import isclass,ismethod,isfunction
 
 __all__ = ('DataField','DataRow','DataTable')
@@ -27,6 +27,8 @@ class ParamJsonEncoder(JSONEncoder):
                 return 0
             elif obj is str:
                 return ""
+            elif obj is float:
+                return 0.0
         super(ParamJsonEncoder,self).default(obj)
 
         
@@ -35,7 +37,7 @@ class DataField:
     def __init__(self,row:DataRow,
                  table:DataTable,
                  parameter:str,
-                 data_type:Union[int,str]):
+                 data_type:Union[int,str,float]):
         self._row = row
         self._table = table
         self._parameter = parameter
@@ -70,7 +72,7 @@ class DataField:
 class DataRow:
 
     def __init__(self,table:DataTable,
-                 parameters:dict[str,Union[int,str]]):
+                 parameters:dict[str,Union[int,str,float]]):
         self._table = table
         self._parameters = parameters
         self._row = dict()
@@ -109,8 +111,14 @@ class DataTable:
         self._modifiers = dict()
         self._checkers = dict()
         self._index = 0
+        self._parameters = dict()
+        if parameters:
+            self.add_parameter(parameters)
+        
+
+    def add_parameter(self,**parameters):
         for datatype in parameters.values():
-            if (not datatype in [int,str]):
+            if (not datatype in [int,str,float]):
                 raise ValueError("parameters must be of supported data type")
         else:
             self._parameters = parameters
@@ -200,24 +208,28 @@ class DataTable:
             return
         raise ParamDoesnotExist("The given parameter does not exist")
 
-    def add_checker(self,param:str,checker:Callable[...,list]) -> None:
+    def add_checker(self,param:str,checker:Callable[Union[str,int,float],Union[str,int,float]]) -> None:
         if param in self._parameters:
             self._checkers[param] = checker
             return
         raise ParamDoesnotExist("The given parameter does not exist")
 
-    def get_column(self,param,checker:Callable[...,list] = None) -> list:
-        result = [row.get_field(param).value for row in self.rows()]
+    def get_column(self,param,checker:Callable[Union[str,int,float],Union[str,int,float]] = None) -> list:
+        """ Use: Return a list of items in a column. If checker is provided, then checker should be a function that takes in a single value
+                which is the item found in the column, and then perform some validation tests on it.
+        """
+        
         if (isfunction(checker) or ismethod(checker)):
-            column = checker(result)
+            column = [checker(row.get_field(param).value) for row in self.rows()]
             return column
         elif checker is None:
             try:
                 checker = self._checkers[param]
             except KeyError:
-                return result
+                column = [row.get_field(param).value for row in self.rows()]
+                return column
             else:
-                column = checker(result)
+                column = [checker(row.get_field(param).value) for row in self.rows()]
                 return column
         else:
             raise ValueError("checker is supposed to be a function or method")       
