@@ -36,6 +36,12 @@ from kdblite import Table
 table = Table(Name = str, Age = int)
 ```
 the above code creates a Table with Name and Age as parameters with string and integer as data types respectively.
+You can also create a Table instance and add parameters to the table using the add_parameter method.
+```python
+from kdblite import Table
+table = Table()
+table.add_parameter(Name = str,Age = int)
+```
 In to add a row to the table, use the new_row method of the Table class. This returns a tuple of index and DataRow object
 
 ```python
