@@ -91,11 +91,11 @@ on how to do it.
 Once the environment variable has been set, it's time to import the StoreManager.
 
 ```python
-from kdblite import Store_Manager # the actual class is actually StoreManager
-sm = Store_Manager()
+from kdblite import StoreManager # the actual class is actually StoreManager
+sm = StoreManager()
 s = sm.create_store("students")
 ```
-Instantiate the Store_Manager class and use the create_store method to create the store. A Store class is returned which we ca use to store
+Instantiate the StoreManager class and use the create_store method to create the store. A Store class is returned which we ca use to store
 the database on disk. If students is already loaded, it will raise an exception instead. You shouldn't create and already created database.
 "students" is the name of the database that is to be created.
 In order to save the table, use the save method of the Store class and pass in the table as the argument
@@ -113,8 +113,8 @@ The kfg file has not yet been used however, but exists for future functinality e
 In order to load an already existing database, we have to use the load_store method of the StoreManager class.
 assuming you've set a consisntent environment variable, the code snippet below shows how one can load a database.
 ```python
-from kdblite import Table,Store_Manager
-sm = Store_Manager()
+from kdblite import Table,StoreManager
+sm = StoreManager()
 s = sm.get_store("students")
 table = Table()
 table.initialize(s.tab_repr,s.kdbl_repr)
