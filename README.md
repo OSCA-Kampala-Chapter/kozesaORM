@@ -1,5 +1,7 @@
 ![kozesalite logo](/docs/dblite2.png)
 # kozesaDBLite
+### NOTICE
+Active development of this project has been moved to the OSCA Kampala repository [here](https://github.com/OSCA-Kampala-Chapter/kozesaDBLite)
 ### Introduction
 KozesaDBLite is a light weight table based database framework developed in Python.
 The database was originally developed to power the Kozesa BMS(Business Management System)
