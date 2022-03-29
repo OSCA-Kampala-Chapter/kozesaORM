@@ -113,12 +113,8 @@ class DataTable:
         self._index = 0
         self._parameters = dict()
         if parameters:
-            for datatype in parameters.values():
-                if (not datatype in [int,str,float]):
-                    raise ValueError("parameters must be of type int, str or float")
-            else:
-                self._parameters = parameters
-
+            self.add_parameter(**parameters)
+            
     def add_parameter(self,**parameters):
         for datatype in parameters.values():
             if (not datatype in [int,str,float]):

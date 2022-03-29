@@ -67,7 +67,7 @@ class Store:
                 self._kdbl_file = kdbl
                 self._kfg_file = kfg
                 
-                #Migrate this code section to parenthesized context managers in python 310
+                
                 with kfg.open() as k:
                     config = ConfigParser()
                     config.read(k)
@@ -91,18 +91,18 @@ class Store:
         sp = self.store_path/name                      #sp:store path
         sp.mkdir()                                     #will raise FileExistsError if directory exists
         
-        # below is a hack I used to implement file creation
+        
         tab = sp/(name + TAB_EXT)
         self._tab_file = tab
-        tab.open(mode = "w").close()
+        os.open(str(tab),os.O_CREAT)
         
         kdbl = sp/(name + KDBL_EXT)
         self._kdbl_file = kdbl
-        kdbl.open(mode = "w").close()
+        os.open(str(kdbl),os.O_CREAT)
         
         kfg = sp/(name + KFG_EXT)
         self._kfg_file = kfg
-        kfg.open(mode = "w").close()
+        os.open(str(kfg),os.O_CREAT)
 
         self.store_path = sp
         self.loaded = True
