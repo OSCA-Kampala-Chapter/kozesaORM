@@ -18,7 +18,7 @@ to use and customize freely.
 
 To install kozesaDBLite, copy and paste the command below in your terminal
 ``` bash
-pip install git+https://github.com/ht-thomas/kozesaDBLite.git 
+pip install https://github.com/OSCA-Kampala-Chapter/kozesaDBLite/archive/refs/tags/v0.2.zip
 ```
 ### Architecture
 kozesadblite implements a relational database represented as a table.
