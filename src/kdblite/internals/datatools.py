@@ -44,6 +44,12 @@ class DataField:
         self._data_type = data_type
         self._value = None
 
+    def __eq__(self,other):
+        if isinstance(self, other.__class__):
+            return self._parameter == other._parameter
+        return False
+
+
     @property
     def value(self):
         return self._value
