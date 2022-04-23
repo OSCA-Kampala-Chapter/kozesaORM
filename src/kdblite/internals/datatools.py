@@ -47,7 +47,6 @@ class DataField:
     def __eq__(self,other):
         if isinstance(self, other.__class__):
             return self._parameter == other._parameter
-        return False
 
 
     @property
