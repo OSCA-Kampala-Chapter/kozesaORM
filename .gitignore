@@ -1,0 +1,10 @@
+.cache/
+.pytest_cache/
+
+
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+*,cover
