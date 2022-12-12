@@ -1,4 +1,9 @@
 # kozesaORM
+
+
+Efforts to build an ORM have instead been shifted to build a full-fledged python object
+database. This project therefore shall not be continued.
+=
 A python based Object Relational Mapper to help you speed up application development
 by abstracting away the fairly complex SQL nitty-gritties and providing you an easy-to-use interface 
 to interact with your relational database.
